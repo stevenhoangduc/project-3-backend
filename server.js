@@ -10,7 +10,7 @@ const logger = require('morgan');
 // Import routers
 const authRouter = require('./controllers/auth');
 const testJwtRouter = require('./controllers/test-jwt');
-const usersRouter = require('./controllers/users');
+const postsRouter = require('./controllers/posts');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -32,7 +32,7 @@ app.use('/test-jwt', testJwtRouter);
 // import verifytoken above
 // then just set it up as a middleware function like below
 // app.use(verifyToken)
-app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 
 // Start the server and listen on port 3000
 app.listen(3000, () => {
