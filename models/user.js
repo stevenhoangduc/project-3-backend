@@ -1,3 +1,5 @@
+// this is just a coment
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
