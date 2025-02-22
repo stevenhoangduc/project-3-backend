@@ -13,12 +13,16 @@ const commentSchema = new mongoose.Schema({
   
 
   const postSchema = new mongoose.Schema({
+  username: String,
   text: String,
-  caption: { type: String, required: true },
+  caption: { type: String },
   location: { type: String },
   image: { type: String },
   likes: { type: Number, default: 0 },
   comment: { type: String},
+  year: Number,
+  model: String,
+  make: String,
   createdAt: { type: Date, default: Date.now },
   isComplete: Boolean,
   userId: {

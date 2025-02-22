@@ -8,23 +8,6 @@ const Post = require('../models/post');
 const verifyToken = require('../middleware/verify-token');
 
 
-// examples of authenticating controller routes
-router.get('/', verifyToken, async (req, res) => {
-
-  // verifyToken defines req.user!
-  // you have access to req.user.username
-  // req.user._id
-  try {
-
-    // only return the username property on all the users
-    const users = await User.find({}, "username");
-
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
-
 router.get('/:userId', verifyToken, async (req, res) => {
   try {
     if (req.user._id !== req.params.userId){
@@ -46,14 +29,10 @@ router.get('/:userId', verifyToken, async (req, res) => {
 
 // Create a post
 router.post('/', verifyToken, async (req, res) => {
+  req.body.userId = req.user._id;
+  req.body.username = req.user.username;
   try {
-    const newPost = new Post({
-      title: req.body.title,
-      content: req.body.content,
-      image: req.body.image,
-      username: req.user.username, // Assuming you're passing user ID to associate the post
-      userId: req.user._id
-    });
+    const newPost = new Post(req.body);
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
   } catch (err) {
@@ -65,7 +44,7 @@ router.post('/', verifyToken, async (req, res) => {
 // Get all posts
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().populate('user', 'username'); // Populate user data if needed
+    const posts = await Post.find().populate('userId', 'username'); // Populate user data if needed
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
