@@ -4,7 +4,7 @@ const carSchema = new mongoose.Schema({
     username: String,
     year: Number,
     model: String,
-    make: String,
+    brand: String,
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     comments: [{ 
         content: String, 
