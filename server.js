@@ -7,10 +7,14 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const logger = require('morgan');
 
+
+
 // Import routers
 const authRouter = require('./controllers/auth');
 const testJwtRouter = require('./controllers/test-jwt');
 const postsRouter = require('./controllers/posts');
+const { upload, uploadImage } = require('./controllers/uploads')
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -27,7 +31,10 @@ app.use(logger('dev'));
 // Routes
 app.use('/auth', authRouter);
 app.use('/test-jwt', testJwtRouter);
+app.use("/uploads", express.static("uploads"));
 
+// Upload route
+app.post("/uploads", upload.single("image"), uploadImage);
 // if you want to verify whole controllers
 // import verifytoken above
 // then just set it up as a middleware function like below

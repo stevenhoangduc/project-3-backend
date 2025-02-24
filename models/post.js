@@ -22,14 +22,13 @@ const commentSchema = new mongoose.Schema({
   comment: { type: String},
   year: Number,
   model: String,
-  make: String,
+  brand: String,
   createdAt: { type: Date, default: Date.now },
   isComplete: Boolean,
   userId: {
     type: mongoose.Schema.Types.ObjectId, 
      ref: 'User', required: true // Reference to the User model
-  }, 
-  username: String,
+  },
   comments: [commentSchema],
 
 });
