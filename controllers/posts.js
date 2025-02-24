@@ -54,14 +54,11 @@ router.get('/', async (req, res) => {
 
 // Update a post
 router.put('/:id', async (req, res) => {
+  console.log(req.body)
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
-      {
-        title: req.body.title,
-        content: req.body.content,
-        image: req.body.image,
-      },
+      req.body,
       { new: true } // Return the updated document
     );
     res.status(200).json(updatedPost);
