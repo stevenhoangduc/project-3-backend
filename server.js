@@ -12,7 +12,7 @@ const logger = require('morgan');
 // Import routers
 const authRouter = require('./controllers/auth');
 const testJwtRouter = require('./controllers/test-jwt');
-const postsRouter = require('./controllers/posts');
+const carsRouter = require('./controllers/cars');
 const { upload, uploadImage } = require('./controllers/uploads')
 
 
@@ -39,7 +39,7 @@ app.post("/uploads", upload.single("image"), uploadImage);
 // import verifytoken above
 // then just set it up as a middleware function like below
 // app.use(verifyToken)
-app.use('/posts', postsRouter);
+app.use('/cars', carsRouter);
 
 // Start the server and listen on port 3000
 app.listen(3000, () => {

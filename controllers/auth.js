@@ -5,6 +5,19 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
+router.get('/sign-up', (req, res) => {
+  res.render('auth/sign-up.ejs');
+}); // these 3 lines 2/24/25
+
+router.get('/sign-in', (req, res) => {
+  res.render('auth/sign-in.ejs');
+}); // these 3 lines 2/24/25
+
+router.get('/sign-out', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+}); // these 3 lines 2/24/25
+
 const saltRounds = 12;
 
 router.post('/sign-up', async (req, res) => {
