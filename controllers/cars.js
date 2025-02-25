@@ -3,7 +3,7 @@ const router = express.Router();
 
 const User = require('../models/user');
 const Car = require('../models/car');
-const Post = require('../models/post');
+
 
 const verifyToken = require('../middleware/verify-token');
 
@@ -27,69 +27,69 @@ router.get('/:userId', verifyToken, async (req, res) => {
 });
 
 
-// Create a post
+// Create a car
 router.post('/', verifyToken, async (req, res) => {
   req.body.userId = req.user._id;
   req.body.username = req.user.username;
   console.log(req.body)
   try {
-    const newPost = new Post(req.body);
-    const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    const newCar = new Car(req.body);
+    const savedCar = await newCar.save();
+    res.status(200).json(savedCar);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
 
-// Get all posts
+// Get all cars
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().populate('userId', 'username'); // Populate user data if needed
-    res.status(200).json(posts);
+    const cars = await Car.find().populate('userId'); // Populate user data if needed
+    res.status(200).json(cars);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
 
-// Update a post
+// Update a car
 router.put('/:id', async (req, res) => {
   console.log(req.body)
   try {
-    const updatedPost = await Post.findByIdAndUpdate(
+    const updatedCar = await Car.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true } // Return the updated document
     );
-    res.status(200).json(updatedPost);
+    res.status(200).json(updatedCar);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
 
-// Delete a post
+// Delete a car
 router.delete('/:id', async (req, res) => {
   try {
-    await Post.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Post deleted successfully' });
+    await Car.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Car deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
 
-// Add a comment to a post
+// Add a comment to a car
 router.post('/:id/comments', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
-    post.comments.push({
+    const car = await Car.findById(req.params.id);
+    car.comments.push({
       content: req.body.content,
       user: req.body.user, // Assuming you're passing the user ID for the comment
     });
-    await post.save();
-    res.status(200).json(post);
+    await car.save();
+    res.status(200).json(car);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
