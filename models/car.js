@@ -19,7 +19,7 @@ const commentSchema = new mongoose.Schema({
   location: { type: String },
   image: { type: String },
   likes: { type: Number, default: 0 },
-  comment: { type: String},
+  
   year: Number,
   model: String,
   brand: String,

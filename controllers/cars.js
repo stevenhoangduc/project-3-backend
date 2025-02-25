@@ -8,30 +8,30 @@ const Car = require('../models/car');
 const verifyToken = require('../middleware/verify-token');
 
 
-router.get('/:userId', verifyToken, async (req, res) => {
-  try {
-    if (req.user._id !== req.params.userId){
-      return res.status(403).json({ err: "Unauthorized"});
-    }
+// router.get('/:userId', verifyToken, async (req, res) => {
+//   try {
+//     if (req.user._id !== req.params.userId){
+//       return res.status(403).json({ err: "Unauthorized"});
+//     }
 
-    const user = await User.findById(req.params.userId);
+//     const user = await User.findById(req.params.userId);
 
-    if (!user) {
-      return res.status(404).json({ err: 'User not found.'});
-    }
+//     if (!user) {
+//       return res.status(404).json({ err: 'User not found.'});
+//     }
 
-    res.json({ user });
-  } catch (err) {
-    res.status(500).json({ err: err.message });
-  }
-});
+//     res.json({ user });
+//   } catch (err) {
+//     res.status(500).json({ err: err.message });
+//   }
+// });
 
 
 // Create a car
 router.post('/', verifyToken, async (req, res) => {
   req.body.userId = req.user._id;
   req.body.username = req.user.username;
-  console.log(req.body)
+  
   try {
     const newCar = new Car(req.body);
     const savedCar = await newCar.save();
@@ -55,7 +55,7 @@ router.get('/', async (req, res) => {
 
 // Update a car
 router.put('/:id', async (req, res) => {
-  console.log(req.body)
+  
   try {
     const updatedCar = await Car.findByIdAndUpdate(
       req.params.id,
@@ -81,19 +81,47 @@ router.delete('/:id', async (req, res) => {
 
 
 // Add a comment to a car
-router.post('/:id/comments', async (req, res) => {
+router.post('/:id/comments', verifyToken, async (req, res) => {
+  console.log(req.body)
+  req.body.userId=req.user._id
+  req.body.username=req.user.username
   try {
     const car = await Car.findById(req.params.id);
-    car.comments.push({
-      content: req.body.content,
-      user: req.body.user, // Assuming you're passing the user ID for the comment
-    });
+    car.comments.push(req.body);
+    console.log(car)
     await car.save();
     res.status(200).json(car);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+router.get('/:carId', verifyToken, async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.carId);
+   
+    res.status(200).json(car);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+  
+})
+
+router.delete ('/:carId/comments/:commentId', async function (req, res){
+  try {
+      const car=await Car.findById(req.params.carId)
+      const comment= car.comments.id(req.params.commentId)
+      car.comments.remove(comment._id)
+      
+      await car.save()
+      res.json(car)
+
+  }catch (err) {
+  console.log(err);
+  res.send("Error check the terminal to debug");
+  }
+})
+
 
 
 module.exports = router;
