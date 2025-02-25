@@ -31,6 +31,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
 router.post('/', verifyToken, async (req, res) => {
   req.body.userId = req.user._id;
   req.body.username = req.user.username;
+  console.log(req.body)
   try {
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();

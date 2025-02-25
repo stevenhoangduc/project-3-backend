@@ -6,7 +6,7 @@ const carSchema = new mongoose.Schema({
     model: String,
     brand: String,
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    imageUrl: { type: String },
+    imageUrl: String, 
     comments: [{ 
         content: String, 
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
