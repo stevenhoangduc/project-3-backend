@@ -18,7 +18,7 @@ const commentSchema = new mongoose.Schema({
   caption: { type: String },
   location: { type: String },
   image: { type: String },
-  likes: { type: Number, default: 0 },
+  likes: [{ type: String}],
   
   year: Number,
   model: String,

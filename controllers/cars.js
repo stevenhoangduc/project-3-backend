@@ -69,6 +69,8 @@ router.put('/:id', async (req, res) => {
 });
 
 
+
+
 // Delete a car
 router.delete('/:id', async (req, res) => {
   try {
@@ -121,6 +123,7 @@ router.delete ('/:carId/comments/:commentId', async function (req, res){
   res.send("Error check the terminal to debug");
   }
 })
+
 
 
 
