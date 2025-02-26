@@ -42,6 +42,8 @@ app.post("/uploads", upload.single("image"), uploadImage);
 app.use('/cars', carsRouter);
 
 // Start the server and listen on port 3000
-app.listen(3000, () => {
-  console.log('The express app is ready!');
+app.set("port", process.env.PORT || 3000);
+
+app.listen(app.get("port"), () => {
+  console.log(`✅ PORT: ${app.get("port")} 🌟`);
 });
